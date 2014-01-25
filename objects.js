@@ -40,9 +40,10 @@ define(["globals"], function (_g) {
 						console.log("Unknown direction - " + that.direction)
 					}
 					moveTimer = spec.moveDelay || 200;
-				} else {
-					moveTimer -= ms;
 				}
+			}
+			if (moveTimer >= 0) {
+				moveTimer -= ms;
 			}
 		}
 
@@ -68,7 +69,6 @@ define(["globals"], function (_g) {
 
 		console.log(dir)
 		that.update = function(ms) {
-			console.log(dir, row, col)
 			timer -= ms;
 			if (timer <= 0) {
 				map.delObj(that.id)
@@ -76,7 +76,6 @@ define(["globals"], function (_g) {
 		};
 
 		that.draw = function(ctx) {
-			console.log(dir)
 			var x, y, width, height;
 			if (dir === "left") {
 				x = 0;
@@ -100,7 +99,7 @@ define(["globals"], function (_g) {
 				height = (map.cols - 1 - row) * TILE_SIZE;
 				
 			}
-			ctx.fillStyle = 'rgba(200, 0, 0, ' + timer/MAX_TIMER + ')';
+			ctx.fillStyle = 'rgba(220, 220, 30, ' + timer/MAX_TIMER + ')';
 			ctx.fillRect (x, y, width, height);
 		}
 		return that;

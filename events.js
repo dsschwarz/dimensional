@@ -2,7 +2,7 @@ define(["globals"],function (_g) {
 
 	// Stub
 	function sendEvent (event) {
-		console.log("Sending: ", event)
+		// console.log("Sending: ", event)
 		receiveEvent(event); // Feed it back in
 	}
 
@@ -17,16 +17,15 @@ define(["globals"],function (_g) {
 				}
 				obj.moving = true;
 				obj.direction = event.direction;
-				console.log(obj)
-
 			} else if(event.type === "stop") {
 				var obj = _g.getObjById(event.id);
 				if (event.direction) {
 					if (obj.direction === event.direction) {
 						obj.moving = false;
 					}
+				} else {
+					obj.moving = false;
 				}
-				obj.moving = false;
 
 			} else if (event.type === "fire") {
 				_g.getObjById(event.id).fire(event.direction)
