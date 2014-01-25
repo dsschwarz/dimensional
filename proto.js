@@ -3,7 +3,7 @@
 // 'Class' definitions
 // spec is the options hash passed to each 'constructor'
 
-
+var TILE_SIZE = 20;
 /**
  * @class map
  * Creates a map holding tiles and objects.
@@ -62,6 +62,27 @@ function map(spec) {
 		};
 		return null;
 	}
+
+	that.addObj = function (object) {
+		that.objects.push(object);
+	}
+
+	that.delObj = function (id) {
+		if (!id) {
+			console.log("No id given to delObj")
+			return;
+		}
+		var index = -1;
+		for (var i = 0; i < that.objects.length; i++) {
+			if (that.objects[i].id === id) {
+				index = i;
+				break;
+			}
+		};
+		if (index >= 0) {
+			that.objects.splice(index, 1);
+		}
+	}
 	return that;
 }
 
@@ -74,10 +95,10 @@ function tile(spec) {
 		pos: spec.pos || [0,0] // Format [row, col]
 	}
 	that.draw = function (ctx) {
-		var x = 10 + that.pos[1] * 20,
-			y = 10 + that.pos[0] * 20;
+		var x = that.pos[1] * TILE_SIZE,
+			y = that.pos[0] * TILE_SIZE;
 		ctx.fillStyle = "#ddd";
-		ctx.fillRect (x, y, 20, 20);
+		ctx.fillRect (x, y, TILE_SIZE, TILE_SIZE);
 	}
 	return that;
 }
@@ -89,54 +110,128 @@ function tile(spec) {
  * 
  */
 function object(spec) {
+	var row = spec.pos[0] || 0,
+		col = spec.pos[1] || 0;
 	var that = {
 		moving: spec.moving || false,
 		direction: spec.direction || "down",
-		moveTimer: 0, // Can only move when timer hits 0
-		pos: spec.pos || [0, 0],
-		id: spec.id
-	};
-	var map = spec.map;
+		pos: [row, col],
+		map: spec.map,
+		id: objectId++
+	}
+	var moveTimer = 0; // Can only move when timer hits 0
 
 	that.update = function (ms) {
 		if (that.moving) {
-			if (that.moveTimer < 0) {
-				console.log("moving")
-				dir = that.direction;
+			if (moveTimer < 0) {
+				console.log("moving");
+				var dir = that.direction;
 				if (dir === "up") {
 					if (that.pos[0] > 0)
 						that.pos[0] -= 1;
 				} else if (dir === "right") {
-					if (that.pos[1] < map.cols - 1)
+					if (that.pos[1] < that.map.cols - 1)
 						that.pos[1] += 1;
 				} else if (dir === "down") {
-					if (that.pos[0] < map.rows - 1)
+					if (that.pos[0] < that.map.rows - 1)
 						that.pos[0] += 1;
 				} else if (dir === "left") {
 					if (that.pos[1] > 0)
 						that.pos[1] -= 1;
+				} else {
+					console.log("Unknown direction - " + that.direction)
 				}
-				that.moveTimer = spec.moveDelay || 200;
+				moveTimer = spec.moveDelay || 200;
 			} else {
-				that.moveTimer -= ms;
+				moveTimer -= ms;
 			}
 		}
 	}
 
 	that.draw = function (ctx) {
-		var x = 10 + that.pos[1] * 20,
-			y = 10 + that.pos[0] * 20;
-		ctx.fillStyle = "#111";
-		ctx.fillRect (x, y, 20, 20);
+		var x = that.pos[1] * TILE_SIZE,
+			y = that.pos[0] * TILE_SIZE;
+		ctx.fillStyle = "#141";
+		ctx.fillRect (x, y, TILE_SIZE, TILE_SIZE);
 	}
 	return that;
 }
-
+var objectId = 0;
+function laser(spec) {
+	var MAX_TIMER = 300;
+	var timer = MAX_TIMER,
+		row = spec.pos[0] || 0,
+		col = spec.pos[1] || 0,
+		map = spec.map,
+		dir = spec.direction;
+	var that = {
+		id: objectId++
+	};
+	console.log(dir)
+	that.update = function(ms) {
+		console.log(dir, row, col)
+		timer -= ms;
+		if (timer <= 0) {
+			map.delObj(that.id)
+		}
+	};
+	that.draw = function(ctx) {
+		console.log(dir)
+		var x, y, width, height;
+		if (dir === "left") {
+			x = 0;
+			y = row * TILE_SIZE + 1;
+			width = col * TILE_SIZE;
+			height = TILE_SIZE - 2;
+		} else if (dir === "right") {
+			x = (col + 1) * TILE_SIZE;
+			y = row * TILE_SIZE + 1;
+			width = (map.cols - 1 - col) * TILE_SIZE;
+			height = TILE_SIZE - 2;
+		} else if (dir === "up") {
+			x = col * TILE_SIZE + 1;
+			y = 0;
+			width = TILE_SIZE - 2;
+			height = row * TILE_SIZE;
+		} else if (dir === "down") {
+			x = col * TILE_SIZE + 1;
+			y = (row + 1) * TILE_SIZE;
+			width = TILE_SIZE - 2;
+			height = (map.cols - 1 - row) * TILE_SIZE;
+			
+		}
+		ctx.fillStyle = 'rgba(200, 0, 0, ' + timer/MAX_TIMER + ')';
+		ctx.fillRect (x, y, width, height);
+	}
+	return that;
+}
 function player(spec) {
 	var that = object(spec);
+	var fireDelay = 500,
+		fireDir = null,
+		fuel = 0;
 	that.fire = function (dir) {
-		
+		fireDir = dir;
 	}
+	var superUpdate = that.update;
+	that.update = function (ms) {
+		superUpdate(ms);
+		if (fireDir) {
+			if (fireDelay <= 0) {
+				that.map.addObj(laser({direction: fireDir, pos: that.pos, map: that.map}));
+				// Space out shots by 1 sec (500 ms delay, 500 ms to charge)
+				fireDelay = 1000;
+				fireDir = null;
+			} else {
+			fireDelay -= ms;
+			}
+
+		// If not fired recently, laser should go immediately into charge state
+		} else if (fireDelay > 500) {
+			fireDelay -= ms;
+		}
+	}
+	return that;
 }
 
 
@@ -155,10 +250,14 @@ function tick (callback) {
 
 // Object containing all the key mappings
 var keyBindings = {
-	65: "left",
-	68: "right",
-	83: "down",
-	87: "up",
+	65: "moveLeft",
+	68: "moveRight",
+	83: "moveDown",
+	87: "moveUp",
+	37: "fireLeft",
+	39: "fireRight",
+	40: "fireDown",
+	38: "fireUp",
 	32: "stop"
 };
 
@@ -175,10 +274,16 @@ function main() {
 		try {
 			if (event.type === "move") {
 				var obj = myMap.getObjById(event.id);
+				if (obj.id !== 0) {
+					console.log("Not p1", obj)
+					console.log("Event received - ", event)
+				}
 				obj.moving = true;
-				obj.direction = event.direction
+				obj.direction = event.direction;
 			} else if(event.type === "stop") {
 				myMap.getObjById(event.id).moving = false;
+			} else if (event.type === "fire") {
+				myMap.getObjById(event.id).fire(event.direction)
 			}
 		} catch(err) {
 			console.log("receiveEvent error - ", err)
@@ -190,13 +295,13 @@ function main() {
 	canvas.width = 620;
 	canvas.height = 620;
 	var myMap = map( {size: {rows: 30, cols: 30}} );
-	var player = object({
+	var p1 = player({
 		map: myMap, 
 		pos: [1, 2], 
-		moving: false,
-		id: 1
+		moving: false
 	})
-	myMap.objects.push(player);
+	console.log(p1)
+	myMap.objects.push(p1);
 	myMap.draw(ctx);
 
 	// Start the game loop
@@ -213,15 +318,27 @@ function main() {
 	document.addEventListener('keydown', function(event) {
 		var key = event.keyCode
 		// console.log(event.keyCode)
-		if ((keyBindings[key] === "up") ||
-	    		(keyBindings[key] === "right") ||
-	    		(keyBindings[key] === "down") ||
-	    		(keyBindings[key] === "left")) {
 
-			sendEvent({type: "move", direction: keyBindings[key], id: player.id})
-		}
-		else if (keyBindings[key] === "stop") {
-			sendEvent({type: "stop", id: player.id})
+		if (keyBindings[key] === "moveUp") {
+			sendEvent({type: "move", direction: "up", id: p1.id})
+		} else if (keyBindings[key] === "moveRight") {
+			sendEvent({type: "move", direction: "right", id: p1.id})
+	    } else if (keyBindings[key] === "moveDown") {
+			sendEvent({type: "move", direction: "down", id: p1.id})
+	    } else if (keyBindings[key] === "moveLeft") {
+			sendEvent({type: "move", direction: "left", id: p1.id})
+
+		} else if (keyBindings[key] === "stop") {
+			sendEvent({type: "stop", id: p1.id})
+
+		} else if (keyBindings[key] === "fireUp") {
+			sendEvent({type: "fire", direction: "up", id: p1.id})
+		} else if (keyBindings[key] === "fireRight") {
+			sendEvent({type: "fire", direction: "right", id: p1.id})
+	    } else if (keyBindings[key] === "fireDown") {
+			sendEvent({type: "fire", direction: "down", id: p1.id})
+	    } else if (keyBindings[key] === "fireLeft") {
+			sendEvent({type: "fire", direction: "left", id: p1.id})
 		}
 	}, false);
 }
