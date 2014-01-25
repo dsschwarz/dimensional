@@ -18,7 +18,7 @@ define(["globals"],function (_g) {
 		if (spec.size) {
 			for (var i = 0; i < that.rows; i++) {
 				for (var j = 0; j < that.cols; j++) {
-					that.tiles.push(tile( {pos: [i, j], color: spec.color} ))
+					that.tiles.push(tile( {pos: [i, j], color: spec.color} ));
 				};
 			};
 		}
@@ -29,10 +29,10 @@ define(["globals"],function (_g) {
 		 */
 		that.draw = function (ctx) {
 			for (var i = 0; i < that.tiles.length; i++) {
-				that.tiles[i].draw(ctx)
+				that.tiles[i].draw(ctx);
 			};
 			for (var i = 0; i < that.objects.length; i++) {
-				that.objects[i].draw(ctx)
+				that.objects[i].draw(ctx);
 			};
 		}
 
@@ -42,7 +42,7 @@ define(["globals"],function (_g) {
 		 */
 		that.update = function (ms) {
 			for (var i = 0; i < that.objects.length; i++) {
-				that.objects[i].update(ms)
+				that.objects[i].update(ms);
 			};
 		}
 
@@ -53,7 +53,7 @@ define(["globals"],function (_g) {
 		that.getObjById = function (id) {
 			for (var i = 0; i < that.objects.length; i++) {
 				if (that.objects[i].id === id) {
-					return that.objects[i]
+					return that.objects[i];
 				}
 			};
 			return null;
@@ -65,7 +65,7 @@ define(["globals"],function (_g) {
 
 		that.delObj = function (id) {
 			if (!id) {
-				console.log("No id given to delObj")
+				console.log("No id given to delObj");
 				return;
 			}
 			var index = -1;

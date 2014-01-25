@@ -16,7 +16,7 @@ define(["globals"], function (_g) {
 			pos: [row, col],
 			map: spec.map,
 			id: objectId++
-		}
+		};
 		var moveTimer = 0; // Can only move when timer hits 0
 
 		that.update = function (ms) {
@@ -37,7 +37,7 @@ define(["globals"], function (_g) {
 						if (that.pos[1] > 0)
 							that.pos[1] -= 1;
 					} else {
-						console.log("Unknown direction - " + that.direction)
+						console.log("Unknown direction - " + that.direction);
 					}
 					moveTimer = spec.moveDelay || 200;
 				}
@@ -67,11 +67,11 @@ define(["globals"], function (_g) {
 			id: objectId++
 		};
 
-		console.log(dir)
+		console.log(dir);
 		that.update = function(ms) {
 			timer -= ms;
 			if (timer <= 0) {
-				map.delObj(that.id)
+				map.delObj(that.id);
 			}
 		};
 
