@@ -98,7 +98,7 @@ define(["globals"], function (_g) {
 				handleCollision(row, i);
 			};
 		} else if (dir === "up") {
-			for (var i = row - 1; i < map.rows; i--) {
+			for (var i = row - 1; i > 0; i--) {
 				handleCollision(i, col);
 			};
 		} else if (dir === "down") {
