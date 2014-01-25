@@ -16,7 +16,7 @@ require(["objects", "map", "globals", "events"], function (_o, _m, _g, _e) {
 			var msDuration = (Date.now() - TIMER_LASTCALL);
 			TIMER_LASTCALL = Date.now();
 			callback(msDuration);
-		})
+		}, 0);
 	}
 
 	function main() {
