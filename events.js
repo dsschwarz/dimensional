@@ -2,7 +2,7 @@ define(["globals"],function (_g) {
 
 	// Stub
 	function sendEvent (event) {
-		// console.log("Sending: ", event)
+		console.log("Sending: ", event)
 		receiveEvent(event); // Feed it back in
 	}
 
@@ -29,6 +29,9 @@ define(["globals"],function (_g) {
 
 			} else if (event.type === "fire") {
 				_g.getObjById(event.id).fire(event.direction)
+
+			} else if (event.type === "setColor") {
+				_g.getObjById(event.id).setColor(event.color)
 			}
 		} catch(err) {
 			console.log("receiveEvent error - ", err)
@@ -65,7 +68,16 @@ define(["globals"],function (_g) {
 			sendEvent({type: "fire", direction: "down", id: _g.player1.id})
 	    } else if (_g.keyBindings[key] === "fireLeft") {
 			sendEvent({type: "fire", direction: "left", id: _g.player1.id})
+
+
+		} else if (_g.keyBindings[key] === "setColorRed") {
+			sendEvent({type: "setColor", id: _g.player1.id, color: "red"})
+		} else if (_g.keyBindings[key] === "setColorGreen") {
+			sendEvent({type: "setColor", id: _g.player1.id, color: "green"})
+		} else if (_g.keyBindings[key] === "setColorBlue") {
+			sendEvent({type: "setColor", id: _g.player1.id, color: "blue"})
 		}
+
 	}, false);
 
 	document.addEventListener('keyup', function(event) {

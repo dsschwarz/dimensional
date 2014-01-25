@@ -8,15 +8,20 @@ define(function() {
 	}
 	// Object containing all the key mappings
 	returnObject.keyBindings = {
-		65: "moveLeft",
+		65: "moveLeft", // awsd
 		68: "moveRight",
 		83: "moveDown",
 		87: "moveUp",
-		37: "fireLeft",
-		39: "fireRight",
+
+		37: "fireLeft", // Left key
+		39: "fireRight", 
 		40: "fireDown",
 		38: "fireUp",
-		32: "stop"
+		32: "stop",
+
+		49: "setColorRed", // 1
+		50: "setColorGreen", // 2
+		51: "setColorBlue" // 3
 	};
 	returnObject.getObjById = function(id) {
 		var obj = returnObject.map1.getObjById(id) || returnObject.map2.getObjById(id) || returnObject.map3.getObjById(id);

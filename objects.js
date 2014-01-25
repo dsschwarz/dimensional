@@ -62,16 +62,55 @@ define(["globals"], function (_g) {
 			row = spec.pos[0] || 0,
 			col = spec.pos[1] || 0,
 			map = spec.map,
+			color = spec.color,
 			dir = spec.direction;
 		var that = {
 			id: objectId++
 		};
 
-		console.log(dir)
+		// Local function to check for objects and handle collision with them
+		function handleCollision(row, col) {
+			var objects = map.getObjsAtPos(row, col);
+			var targetMap;
+			if (that.color === "red") {
+				targetMap = _g.map1;
+			} else if (that.color === "green") {
+				targetMap = _g.map2;
+			} else if (that.color === "blue") {
+				targetMap = _g.map3;
+			}
+			for (o in objects) {
+				if (o.type === "player") {
+					o.map.delObj(o.id);
+					o.map = map;
+					map.addObj(o);
+				}
+			}
+		}
+
+		// detect a hit
+		if (dir === "left") {
+			for (var i = col - 1; i > 0; i--) {
+				handleCollision(row, i);
+			};
+		} else if (dir === "right") {
+			for (var i = col + 1; i < map.cols - 1; i++) {
+				handleCollision(row, i);
+			};
+		} else if (dir === "up") {
+			for (var i = row - 1; i < map.rows; i--) {
+				handleCollision(i, col);
+			};
+		} else if (dir === "down") {
+			for (var i = row - 1; i < map.rows; i++) {
+				handleCollision(i, col);
+			};
+		}
+
 		that.update = function(ms) {
 			timer -= ms;
 			if (timer <= 0) {
-				map.delObj(that.id)
+				map.delObj(that.id);
 			}
 		};
 
@@ -97,9 +136,15 @@ define(["globals"], function (_g) {
 				y = (row + 1) * TILE_SIZE;
 				width = TILE_SIZE/2;
 				height = (map.cols - 1 - row) * TILE_SIZE;
-				
 			}
-			ctx.fillStyle = 'rgba(220, 220, 30, ' + timer/MAX_TIMER + ')';
+
+			if (color === "red") {
+				ctx.fillStyle = 'rgba(220, 30, 30, ' + timer/MAX_TIMER + ')';
+			} else if (color === "green") {
+				ctx.fillStyle = 'rgba(30, 220, 30, ' + timer/MAX_TIMER + ')';
+			} else if (color === "blue") {
+				ctx.fillStyle = 'rgba(30, 30, 220,' + timer/MAX_TIMER + ')';
+			}
 			ctx.fillRect (x, y, width, height);
 		}
 		return that;
@@ -109,21 +154,26 @@ define(["globals"], function (_g) {
 		var that = object(spec);
 		var fireDelay = 500,
 			fireDir = null,
+			fireColor = "green",
 			fuel = 0;
 		that.fire = function (dir) {
 			fireDir = dir;
+		}
+		that.setColor = function (color) {
+			fireColor = color || "red";
 		}
 		var superUpdate = that.update;
 		that.update = function (ms) {
 			superUpdate(ms);
 			if (fireDir) {
 				if (fireDelay <= 0) {
-					that.map.addObj(laser({direction: fireDir, pos: that.pos, map: that.map}));
+					that.map.addObj(laser({direction: fireDir, pos: that.pos, map: that.map, color: fireColor}));
+					console.log("Fried-", that.map)
 					// Space out shots by 1 sec (500 ms delay, 500 ms to charge)
 					fireDelay = 1000;
 					fireDir = null;
 				} else {
-				fireDelay -= ms;
+					fireDelay -= ms;
 				}
 
 			// If not fired recently, laser should go immediately into charge state

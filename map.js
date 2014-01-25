@@ -59,10 +59,24 @@ define(["globals"],function (_g) {
 			return null;
 		}
 
+		that.getObjsAtPos = function (row, col) {
+			var objects = [];
+			for (var i = 0; i < that.objects.length; i++) {
+				if (that.objects[i].pos[0] === row && that.objects[i].pos[1] === col) {
+					objects.push(that.objects[1]);
+				}
+			};
+			return objects;
+		}
+
 		that.addObj = function (object) {
 			that.objects.push(object);
 		}
 
+		/**
+		 * Remove an obj from a map by id. Note: Not garuanteed to destroy object
+		 * returns true for success, false for failure
+		 */
 		that.delObj = function (id) {
 			if (!id) {
 				console.log("No id given to delObj")
@@ -77,7 +91,9 @@ define(["globals"],function (_g) {
 			};
 			if (index >= 0) {
 				that.objects.splice(index, 1);
+				return true;
 			}
+			return false;
 		}
 		return that;
 	}
