@@ -18,7 +18,7 @@ define(["globals"],function (_g) {
 		if (spec.size) {
 			for (var i = 0; i < that.rows; i++) {
 				for (var j = 0; j < that.cols; j++) {
-					that.tiles.push(tile( {pos: [i, j]} ))
+					that.tiles.push(tile( {pos: [i, j], color: spec.color} ))
 				};
 			};
 		}
@@ -88,12 +88,13 @@ define(["globals"],function (_g) {
 	 */
 	function tile(spec) {
 		var that = {
+			color: spec.color || "#ddd",
 			pos: spec.pos || [0,0] // Format [row, col]
 		}
 		that.draw = function (ctx) {
 			var x = that.pos[1] * TILE_SIZE,
 				y = that.pos[0] * TILE_SIZE;
-			ctx.fillStyle = "#ddd";
+			ctx.fillStyle = that.color;
 			ctx.fillRect (x, y, TILE_SIZE, TILE_SIZE);
 		}
 		return that;

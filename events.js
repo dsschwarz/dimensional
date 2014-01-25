@@ -10,19 +10,26 @@ define(["globals"],function (_g) {
 	function receiveEvent (event) {
 		try {
 			if (event.type === "move") {
-				var obj = _g.map.getObjById(event.id);
+				var obj = _g.getObjById(event.id);
 				if (obj.id !== 0) {
 					console.log("Not player1", obj)
 					console.log("Event received - ", event)
 				}
 				obj.moving = true;
 				obj.direction = event.direction;
+				console.log(obj)
 
 			} else if(event.type === "stop") {
-				_g.map.getObjById(event.id).moving = false;
+				var obj = _g.getObjById(event.id);
+				if (event.direction) {
+					if (obj.direction === event.direction) {
+						obj.moving = false;
+					}
+				}
+				obj.moving = false;
 
 			} else if (event.type === "fire") {
-				_g.map.getObjById(event.id).fire(event.direction)
+				_g.getObjById(event.id).fire(event.direction)
 			}
 		} catch(err) {
 			console.log("receiveEvent error - ", err)
@@ -59,6 +66,20 @@ define(["globals"],function (_g) {
 			sendEvent({type: "fire", direction: "down", id: _g.player1.id})
 	    } else if (_g.keyBindings[key] === "fireLeft") {
 			sendEvent({type: "fire", direction: "left", id: _g.player1.id})
+		}
+	}, false);
+
+	document.addEventListener('keyup', function(event) {
+		var key = event.keyCode
+
+		if (_g.keyBindings[key] === "moveUp") {
+			sendEvent({type: "stop", direction: "up", id: _g.player1.id})
+		} else if (_g.keyBindings[key] === "moveRight") {
+			sendEvent({type: "stop", direction: "right", id: _g.player1.id})
+	    } else if (_g.keyBindings[key] === "moveDown") {
+			sendEvent({type: "stop", direction: "down", id: _g.player1.id})
+	    } else if (_g.keyBindings[key] === "moveLeft") {
+			sendEvent({type: "stop", direction: "left", id: _g.player1.id})
 		}
 	}, false);
 });

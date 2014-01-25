@@ -1,5 +1,6 @@
-define(["globals"],function (_g) {
+define(["globals"], function (_g) {
 	var TILE_SIZE = _g.TILE_SIZE;
+	var objectId = 0;
 	/**
 	 * Create an object that can move.
 	 * @param  {Object} spec = {id: <int/String>, map: <map>, moving: <bool>, direction: <string>, moveDelay: <int>}
@@ -53,7 +54,7 @@ define(["globals"],function (_g) {
 		}
 		return that;
 	}
-	var objectId = 0;
+	
 	function laser(spec) {
 		var MAX_TIMER = 300;
 		var timer = MAX_TIMER,
@@ -64,6 +65,7 @@ define(["globals"],function (_g) {
 		var that = {
 			id: objectId++
 		};
+
 		console.log(dir)
 		that.update = function(ms) {
 			console.log(dir, row, col)
@@ -72,6 +74,7 @@ define(["globals"],function (_g) {
 				map.delObj(that.id)
 			}
 		};
+
 		that.draw = function(ctx) {
 			console.log(dir)
 			var x, y, width, height;
@@ -102,6 +105,7 @@ define(["globals"],function (_g) {
 		}
 		return that;
 	}
+
 	function player(spec) {
 		var that = object(spec);
 		var fireDelay = 500,

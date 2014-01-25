@@ -25,22 +25,29 @@ require(["objects", "map", "globals", "events"], function (_o, _m, _g, _e) {
 		var ctx = canvas.getContext("2d");
 		canvas.width = 620;
 		canvas.height = 620;
-		var myMap = _m.map( {size: {rows: 30, cols: 30}} );
+		var redMap = _m.map( {size: {rows: 30, cols: 30}, color: "d33"} );
+		var greenMap = _m.map( {size: {rows: 30, cols: 30}, color: "3d3"} );
+		var blueMap = _m.map( {size: {rows: 30, cols: 30}, color: "33d"} );
 		var p1 = _o.player({
-			map: myMap, 
+			map: redMap, 
 			pos: [1, 2], 
 			moving: false
 		})
-		myMap.objects.push(p1);
-		myMap.draw(ctx);
+		redMap.objects.push(p1);
+		redMap.draw(ctx);
 		
+		_g.map1 = redMap;
+		_g.map2 = greenMap;
+		_g.map3 = blueMap;
 		_g.player1 = p1;
-		_g.map = myMap
 
 		// Start the game loop
 		tick(function (ms) {
-			myMap.update(ms);
-			myMap.draw(ctx);
+			var currentMap = _g.player1.map;
+			_g.map1.update(ms);
+			_g.map2.update(ms);
+			_g.map3.update(ms);
+			currentMap.draw(ctx);
 		})
 	};
 	main();
