@@ -25,9 +25,9 @@ require(["objects", "map", "globals", "events"], function (_o, _m, _g, _e) {
 		var ctx = canvas.getContext("2d");
 		canvas.width = 620;
 		canvas.height = 620;
-		var redMap = _m.map( {size: {rows: 30, cols: 30}, color: "d33"} );
-		var greenMap = _m.map( {size: {rows: 30, cols: 30}, color: "3d3"} );
-		var blueMap = _m.map( {size: {rows: 30, cols: 30}, color: "33d"} );
+		var redMap = _m.map( {size: {rows: 30, cols: 30}, color: "#d33"} );
+		var greenMap = _m.map( {size: {rows: 30, cols: 30}, color: "#3d3"} );
+		var blueMap = _m.map( {size: {rows: 30, cols: 30}, color: "#33d"} );
 		var p1 = _o.player({
 			map: redMap, 
 			pos: [1, 2], 
