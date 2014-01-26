@@ -217,10 +217,11 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 		spec.kind = null;
 
 		var that = object(spec);
-		that.fuel = 0;
-		
+		that.fuel = 3;
+
 		var fireDelay = 500,
 			fireDir = null,
+			maxFuel = 20,
 			fireColor = "green";
 
 		that.fire = function (dir) {
@@ -234,12 +235,18 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 			superUpdate(ms);
 			if (fireDir) {
 				if (fireDelay <= 0) {
-					that.map.addObj(laser({direction: fireDir, pos: that.pos, map: that.map, color: fireColor}));
-					fireDelay = 1000;
-					fireDir = null;
+					if (that.fuel > 0) {
+						that.map.addObj(laser({direction: fireDir, pos: that.pos, map: that.map, color: fireColor}));
+						// Space out shots by 1 sec (500 ms delay, 500 ms to charge)
+						fireDelay = 1000;
+						fireDir = null;
 
-					that.fuel -= 1;
-					// Space out shots by 1 sec (500 ms delay, 500 ms to charge)
+						that.fuel -= 1;
+					} else {
+						console.log("You require more fuels")
+						fireDelay = 500;
+						fireDir = null
+					}
 				} else {
 					fireDelay -= ms;
 				}
@@ -247,6 +254,29 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 			// If not fired recently, laser should go immediately into charge state
 			} else if (fireDelay > 500) {
 				fireDelay -= ms;
+			}
+		}
+
+		var superDraw = that.draw;
+		that.draw = function (ctx) {
+			superDraw(ctx);
+			var canvas = document.getElementById("game-canvas"),
+				fuelWidth = 20,
+				fuelHeight = canvas.height;
+			ctx.fillStyle = "#fff";
+			ctx.fillRect(canvas.width - fuelWidth, 0, fuelWidth, fuelHeight);
+
+			ctx.fillStyle = "#000";
+			ctx.fillRect(canvas.width - fuelWidth, 0, fuelWidth, fuelHeight*(that.fuel/maxFuel));
+
+		}
+
+		that.shiftSelf = function (color) {
+			if (that.fuel > 0) {
+				that.shiftObject(color);
+				that.fuel -= 1;
+			} else {
+				console.log("You require more fuels")
 			}
 		}
 

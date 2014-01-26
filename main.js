@@ -24,7 +24,7 @@ require(["objects", "map", "globals", "events", "data", "ui"], function (_o, _m,
 		// Initialize the game
 		var canvas = document.getElementById("game-canvas");
 		var ctx = canvas.getContext("2d");
-		canvas.width = 600;
+		canvas.width = 620;
 		canvas.height = 600;
 		var redMap = _m.map( {size: {rows: 20, cols: 30}, color: "#d33"} );
 		var greenMap = _m.map( {size: {rows: 20, cols: 30}, color: "#3d3"} );
