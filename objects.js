@@ -288,6 +288,7 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 			objs.push.apply(objs, that.map.getObjsAtPos(that.pos[0]-1, that.pos[1]));
 			objs.push.apply(objs, that.map.getObjsAtPos(that.pos[0], that.pos[1]+1));
 			objs.push.apply(objs, that.map.getObjsAtPos(that.pos[0], that.pos[1]-1));
+			objs.push.apply(objs, that.map.getObjsAtPos(that.pos[0], that.pos[1]));
 			// switch(that.direction) {
 			// case "down":
 			// 	objs.append(that.map.findObjAtPos(that.pos[0]+1, that.pos[1]));
