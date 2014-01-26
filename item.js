@@ -24,18 +24,22 @@ define(["globals", "objects", "data", "ui", "util"], function(_g, _o, _d, _u, _u
 					break;
 			}
 
-			var x = that.pos[1] * TILE_SIZE + TILE_SIZE/4;
-			var y = that.pos[0] * TILE_SIZE + TILE_SIZE/4;
-			var width = TILE_SIZE/2;
-			var height = TILE_SIZE/2;
-			ctx.fillRect(x, y, width, height);
+			var x = that.pos[1] * TILE_SIZE + TILE_SIZE/2;
+			var y = that.pos[0] * TILE_SIZE + TILE_SIZE/2;
+			var radius = TILE_SIZE/4
+
+			ctx.beginPath();
+			ctx.arc(x, y, radius, 0, 2* Math.PI, false);
+
+			ctx.fillStyle = that.color;
+			ctx.fill();
 		}
 
 		that.onCollide = function(obj) {
 			switch(that.kind) {
 				case _g.kinds.item.banana:
 					var data = _d.itemData.banana;
-					var subcan = _util.createSolidCanvas(100, 100, data.color);
+					var subcan = _util.createCircleCanvas(50, data.color);
 					_u.displayMessage(data.name, data.messages.description, subcan);
 					break;
 				case _g.kinds.item.rock:
@@ -52,7 +56,7 @@ define(["globals", "objects", "data", "ui", "util"], function(_g, _o, _d, _u, _u
 			switch(that.kind) {
 				case _g.kinds.item.banana:
 					var data = _d.itemData.banana;
-					var subcan = _util.createSolidCanvas(100, 100, data.color);
+					var subcan = _util.createCircleCanvas(50, data.color);
 					_u.displayMessage(data.name, data.messages.action, subcan);
 					that.map.delObj(that.id);
 					break;

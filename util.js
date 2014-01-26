@@ -11,8 +11,25 @@ define(function() {
 		return subcan;
 	}
 
+	function createCircleCanvas(radius, color) {
+		var subcan = document.createElement("canvas");
+		subcan.height = radius * 2;
+		subcan.width = radius * 2;
+		var subctx = subcan.getContext("2d");
+
+		subctx.beginPath();
+		subctx.arc(radius, radius, radius, 0, 2* Math.PI, false);
+
+		subctx.fillStyle = color;
+		subctx.fill();
+
+		return subcan;
+	}
+
+
 	return {
-		createSolidCanvas: createSolidCanvas
+		createSolidCanvas: createSolidCanvas,
+		createCircleCanvas: createCircleCanvas
 	}
 
 });

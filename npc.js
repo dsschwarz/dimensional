@@ -34,8 +34,8 @@ define(["globals", "objects", "ui", "util"], function(_g, _o, _u, _util) {
 		that.onTalk = function() {
 			var subcan = _util.createSolidCanvas(100, 100, that.color);
 
-			if (!firstTalk) {
-				firstTalk = true;
+			if (!that.firstTalk) {
+				that.firstTalk = true;
 				_u.displayMessage(that.name, that.messages.firstTalk, subcan);
 			} else {
 				_u.displayMessage(that.name, that.messages.normal[Math.floor(Math.random() * that.messages.normal.length)], subcan);

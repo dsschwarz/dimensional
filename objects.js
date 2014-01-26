@@ -305,7 +305,7 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 
 			// }
 
-			if (objs.length == 1) {
+			if (objs.length > 0) {
 				var obj = objs[0];
 				if (obj.type == _g.types.NPC) {
 					obj.onTalk();
