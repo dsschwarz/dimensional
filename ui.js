@@ -39,6 +39,13 @@ define(function() {
 		ui.name = null;
 	}
 
+	ui.clearMessage = function() {
+		ui.avatar = null;
+		ui.message = null;
+		ui.name = null;
+	}
+
+
 
 
 	return ui;

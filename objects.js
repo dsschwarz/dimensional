@@ -306,12 +306,19 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 			// }
 
 			if (objs.length > 0) {
-				var obj = objs[0];
-				if (obj.type == _g.types.NPC) {
-					obj.onTalk();
-				}
-				else {
-					obj.onAction();
+				for (var i = 0; i < objs.length; i++) {
+					var obj = objs[i];
+					if (obj.type == _g.types.PLAYER) {
+						continue;
+					}
+					if (obj.type == _g.types.NPC) {
+						obj.onTalk();
+						return;
+					}
+					else {
+						obj.onAction();
+						return;
+					}
 				}
 			}
 		}
