@@ -1,4 +1,5 @@
 define(["globals"],function (_g) {
+	var shiftEnabled = false; // Switching colors shifts player
 
 	// Stub
 	function sendEvent (event) {
@@ -9,7 +10,8 @@ define(["globals"],function (_g) {
 	// Stub
 	function receiveEvent (event) {
 		try {
-			if (event.type === "move") {
+			switch (event.type) {
+			case "move":
 				var obj = _g.getObjById(event.id);
 				if (obj.id !== 0) {
 					console.log("Not player1", obj)
@@ -17,7 +19,9 @@ define(["globals"],function (_g) {
 				}
 				obj.moving = true;
 				obj.direction = event.direction;
-			} else if(event.type === "stop") {
+				break;
+
+			case "stop":
 				var obj = _g.getObjById(event.id);
 				if (event.direction) {
 					if (obj.direction === event.direction) {
@@ -26,19 +30,28 @@ define(["globals"],function (_g) {
 				} else {
 					obj.moving = false;
 				}
+				break;
 
-			} else if (event.type === "fire") {
+			case "fire":
 				_g.getObjById(event.id).fire(event.direction)
+				break;
 
-			} else if (event.type === "setColor") {
-				_g.getObjById(event.id).setColor(event.color)
+			case "setColor":
+				_g.getObjById(event.id).setColor(event.color);
+				break;
+
+			case "shiftSelf":
+				_g.shiftObject(event.id, event.color);
+				break;
+
+			default:
+				console.log("Unrecognized event.type - " + event.type, event)
 			}
 		} catch(err) {
 			console.log("receiveEvent error - ", err)
 		}
 	}
 
-	var TILE_SIZE = _g.TILE_SIZE;
 	document.addEventListener('mousedown', function(event) {
 	    console.log('mousedown');
 	    // TODO: find mouse target
@@ -46,51 +59,91 @@ define(["globals"],function (_g) {
 
 	document.addEventListener('keydown', function(event) {
 		var key = event.keyCode
-		// console.log(event.keyCode)
+		console.log(event.keyCode)
 
-		if (_g.keyBindings[key] === "moveUp") {
+		switch(_g.keyBindings[key]) {
+		case "moveUp":
 			sendEvent({type: "move", direction: "up", id: _g.player1.id})
-		} else if (_g.keyBindings[key] === "moveRight") {
+			break;
+		case "moveRight":
 			sendEvent({type: "move", direction: "right", id: _g.player1.id})
-	    } else if (_g.keyBindings[key] === "moveDown") {
+			break;
+	    case "moveDown":
 			sendEvent({type: "move", direction: "down", id: _g.player1.id})
-	    } else if (_g.keyBindings[key] === "moveLeft") {
+			break;
+	    case "moveLeft":
 			sendEvent({type: "move", direction: "left", id: _g.player1.id})
+			break;
 
-		} else if (_g.keyBindings[key] === "stop") {
+		case "stop":
 			sendEvent({type: "stop", id: _g.player1.id})
+			break;
 
-		} else if (_g.keyBindings[key] === "fireUp") {
+		case "fireUp":
 			sendEvent({type: "fire", direction: "up", id: _g.player1.id})
-		} else if (_g.keyBindings[key] === "fireRight") {
+			break;
+		case "fireRight":
 			sendEvent({type: "fire", direction: "right", id: _g.player1.id})
-	    } else if (_g.keyBindings[key] === "fireDown") {
+			break;
+	    case "fireDown":
 			sendEvent({type: "fire", direction: "down", id: _g.player1.id})
-	    } else if (_g.keyBindings[key] === "fireLeft") {
+			break;
+	    case "fireLeft":
 			sendEvent({type: "fire", direction: "left", id: _g.player1.id})
+			break;
 
+		case "setColorRed":
+			if(shiftEnabled) {
+				sendEvent({type: "shiftSelf", id: _g.player1.id, color: "red"});
+			} else {
+				sendEvent({type: "setColor", id: _g.player1.id, color: "red"});
+			}
+			break;
+		case "setColorGreen":
+			if(shiftEnabled) {
+				sendEvent({type: "shiftSelf", id: _g.player1.id, color: "green"});
+			} else {
+				sendEvent({type: "setColor", id: _g.player1.id, color: "green"});
+			}
+			break;
+		case "setColorBlue":
+			if(shiftEnabled) {
+				sendEvent({type: "shiftSelf", id: _g.player1.id, color: "blue"});
+			} else {
+				sendEvent({type: "setColor", id: _g.player1.id, color: "blue"});
+			}
+			break;
 
-		} else if (_g.keyBindings[key] === "setColorRed") {
-			sendEvent({type: "setColor", id: _g.player1.id, color: "red"})
-		} else if (_g.keyBindings[key] === "setColorGreen") {
-			sendEvent({type: "setColor", id: _g.player1.id, color: "green"})
-		} else if (_g.keyBindings[key] === "setColorBlue") {
-			sendEvent({type: "setColor", id: _g.player1.id, color: "blue"})
+		case "shiftSelf":
+			shiftEnabled = true;
+			break;
+
+		default:
+			// Key is not bound
+			break;
 		}
-
 	}, false);
 
 	document.addEventListener('keyup', function(event) {
 		var key = event.keyCode
 
-		if (_g.keyBindings[key] === "moveUp") {
+		switch(_g.keyBindings[key]) {
+		case "moveUp": 
 			sendEvent({type: "stop", direction: "up", id: _g.player1.id})
-		} else if (_g.keyBindings[key] === "moveRight") {
+			break;
+		case "moveRight":
 			sendEvent({type: "stop", direction: "right", id: _g.player1.id})
-	    } else if (_g.keyBindings[key] === "moveDown") {
+			break;
+	    case "moveDown":
 			sendEvent({type: "stop", direction: "down", id: _g.player1.id})
-	    } else if (_g.keyBindings[key] === "moveLeft") {
+			break;
+	    case "moveLeft":
 			sendEvent({type: "stop", direction: "left", id: _g.player1.id})
+			break;
+
+		case "shiftSelf":
+			shiftEnabled = false;
+			break;
 		}
 	}, false);
 });

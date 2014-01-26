@@ -78,7 +78,7 @@ define(["globals"],function (_g) {
 		 * returns true for success, false for failure
 		 */
 		that.delObj = function (id) {
-			if (!id) {
+			if (id === null) {
 				console.log("No id given to delObj")
 				return;
 			}

@@ -21,11 +21,37 @@ define(function() {
 
 		49: "setColorRed", // 1
 		50: "setColorGreen", // 2
-		51: "setColorBlue" // 3
+		51: "setColorBlue", // 3
+
+		16: "shiftSelf" // shift key enables shifting self with number key
 	};
+
 	returnObject.getObjById = function(id) {
 		var obj = returnObject.map1.getObjById(id) || returnObject.map2.getObjById(id) || returnObject.map3.getObjById(id);
 		return obj;
-	}
+	};
+
+	// Shift an object from on map to another
+	returnObject.shiftObject = function(id, color) {
+		var targetMap;
+		switch (color) {
+		case "red":
+			targetMap = returnObject.map1;
+			break;
+		case "green":
+			targetMap = returnObject.map2;
+			break;
+		case "blue":
+			targetMap = returnObject.map3;
+			break;
+		default:
+			console.log("Unrecognized color - " + color);
+			return; // Exit function - do not shift object
+		}
+		var obj = returnObject.getObjById(id);
+		obj.map.delObj(obj.id);
+		obj.map = targetMap;
+		targetMap.addObj(obj);
+	};
 	return returnObject; 
 })

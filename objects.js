@@ -64,6 +64,7 @@ define(["globals"], function (_g) {
 			map = spec.map,
 			color = spec.color,
 			dir = spec.direction;
+
 		var that = {
 			id: objectId++
 		};
@@ -71,19 +72,9 @@ define(["globals"], function (_g) {
 		// Local function to check for objects and handle collision with them
 		function handleCollision(row, col) {
 			var objects = map.getObjsAtPos(row, col);
-			var targetMap;
-			if (that.color === "red") {
-				targetMap = _g.map1;
-			} else if (that.color === "green") {
-				targetMap = _g.map2;
-			} else if (that.color === "blue") {
-				targetMap = _g.map3;
-			}
-			for (o in objects) {
+			for (var o in objects) {
 				if (o.type === "player") {
-					o.map.delObj(o.id);
-					o.map = map;
-					map.addObj(o);
+					_g.shiftObject(o.id);
 				}
 			}
 		}
