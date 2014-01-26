@@ -1,4 +1,4 @@
-define(["globals", "objects"],function (_g, _o) {
+define(["globals", "objects", "npc"],function (_g, _o, _npc) {
 	var TILE_SIZE = _g.TILE_SIZE;
 	/**
 	 * @class map
@@ -113,8 +113,7 @@ define(["globals", "objects"],function (_g, _o) {
 							kind: item.kind
 
 					};
-					var test = _o.npc(spec);
-					that.addObj(_o.npc(spec));
+					that.addObj(_npc(spec));
 				}
 			}
 		}
