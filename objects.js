@@ -67,7 +67,7 @@ define(["globals"], function (_g) {
 
 		var that = {
 			id: objectId++
-		};
+		}
 
 		// Local function to check for objects and handle collision with them
 		function handleCollision(row, col) {
@@ -75,6 +75,8 @@ define(["globals"], function (_g) {
 			for (var o in objects) {
 				if (o.type === "player") {
 					_g.shiftObject(o.id);
+				}
+				else if (o.type === "npc") {
 				}
 			}
 		}
