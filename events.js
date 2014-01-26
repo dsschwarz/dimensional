@@ -10,13 +10,14 @@ define(["globals"],function (_g) {
 	// Stub
 	function receiveEvent (event) {
 		try {
+			event.id = 0;
 			switch (event.type) {
 			case "move":
 				var obj = _g.getObjById(event.id);
-				if (obj.id !== 0) {
-					console.log("Not player1", obj);
-					console.log("Event received - ", event);
-				}
+				//if (obj.id !== 0) {
+				//	console.log("Not player1", obj);
+				//	console.log("Event received - ", event);
+				//}
 				obj.moving = true;
 				obj.direction = event.direction;
 				break;
@@ -44,6 +45,10 @@ define(["globals"],function (_g) {
 				_g.shiftObject(event.id, event.color);
 				break;
 
+			case "action":
+				_g.player1.findAction();
+				break;
+
 			default:
 				console.log("Unrecognized event.type - " + event.type, event)
 			}
@@ -68,10 +73,10 @@ define(["globals"],function (_g) {
 		case "moveRight":
 			sendEvent({type: "move", direction: "right", id: _g.player1.id})
 			break;
-	    case "moveDown":
+		case "moveDown":
 			sendEvent({type: "move", direction: "down", id: _g.player1.id})
 			break;
-	    case "moveLeft":
+		case "moveLeft":
 			sendEvent({type: "move", direction: "left", id: _g.player1.id})
 			break;
 
@@ -85,10 +90,10 @@ define(["globals"],function (_g) {
 		case "fireRight":
 			sendEvent({type: "fire", direction: "right", id: _g.player1.id})
 			break;
-	    case "fireDown":
+		case "fireDown":
 			sendEvent({type: "fire", direction: "down", id: _g.player1.id})
 			break;
-	    case "fireLeft":
+		case "fireLeft":
 			sendEvent({type: "fire", direction: "left", id: _g.player1.id})
 			break;
 
@@ -118,6 +123,10 @@ define(["globals"],function (_g) {
 			shiftEnabled = true;
 			break;
 
+		case "action":
+			sendEvent({type: "action"});
+			break;
+
 		default:
 			// Key is not bound
 			break;
@@ -134,10 +143,10 @@ define(["globals"],function (_g) {
 		case "moveRight":
 			sendEvent({type: "stop", direction: "right", id: _g.player1.id})
 			break;
-	    case "moveDown":
+		case "moveDown":
 			sendEvent({type: "stop", direction: "down", id: _g.player1.id})
 			break;
-	    case "moveLeft":
+		case "moveLeft":
 			sendEvent({type: "stop", direction: "left", id: _g.player1.id})
 			break;
 
@@ -146,4 +155,6 @@ define(["globals"],function (_g) {
 			break;
 		}
 	}, false);
+
+	return {};
 });

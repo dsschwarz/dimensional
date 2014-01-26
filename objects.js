@@ -1,4 +1,4 @@
-define(["globals"], function (_g) {
+define(["globals", "objects"], function (_g, _o) {
 	var TILE_SIZE = _g.TILE_SIZE;
 	var objectId = 0;
 	/**
@@ -15,7 +15,9 @@ define(["globals"], function (_g) {
 			direction: spec.direction || "down",
 			pos: [row, col],
 			map: spec.map,
-			id: objectId++
+			id: objectId++,
+			type: spec.type,
+			kind: spec.kind
 		};
 		var moveTimer = 0; // Can only move when timer hits 0
 
@@ -53,6 +55,28 @@ define(["globals"], function (_g) {
 			ctx.fillStyle = "#141";
 			ctx.fillRect (x, y, TILE_SIZE, TILE_SIZE);
 		}
+
+		that.shiftObject = function(color) {
+			var targetMap;
+			switch (color) {
+			case "red":
+				targetMap = _g.map1;
+				break;
+			case "green":
+				targetMap = _g.map2;
+				break;
+			case "blue":
+				targetMap = _g.map3;
+				break;
+			default:
+				console.log("Unrecognized color - " + color);
+				return; // Exit function - do not shift object
+			}
+			that.map.delObj(that.id);
+			that.map = targetMap;
+			targetMap.addObj(that);
+		}
+
 		return that;
 	}
 	
@@ -73,10 +97,12 @@ define(["globals"], function (_g) {
 		function handleCollision(row, col) {
 			var objects = map.getObjsAtPos(row, col);
 			for (var o in objects) {
-				if (o.type === "player") {
+				if (o.type === _g.types.PLAYER) {
 					_g.shiftObject(o.id);
 				}
-				else if (o.type === "npc") {
+
+				else if (o.type === _g.types.NPC) {
+					o.handleTeleport();
 				}
 			}
 		}
@@ -149,6 +175,9 @@ define(["globals"], function (_g) {
 	}
 
 	function player(spec) {
+		spec.type = _g.types.PLAYER;
+		spec.kind = null;
+
 		var that = object(spec);
 		var fireDelay = 500,
 			fireDir = null,
@@ -179,10 +208,55 @@ define(["globals"], function (_g) {
 				fireDelay -= ms;
 			}
 		}
+
+		that.findAction = function() {
+			var objs = [];
+			objs.append(that.map.findObjAtPos(that.pos[0]+1, that.pos[1]));
+			objs.append(that.map.findObjAtPos(that.pos[0]-1, that.pos[1]));
+			objs.append(that.map.findObjAtPos(that.pos[0], that.pos[1]+1));
+			objs.append(that.map.findObjAtPos(that.pos[0], that.pos[1]-1));
+
+			if (obj.length == 1) {
+				if (obj.type == _g.types.NPC) {
+					obj.onTalk();
+				}
+			}
+		}
+
 		return that;
 	}
+
+
+	function npc(spec) {
+		spec.type = _g.types.NPC;
+		spec.kind = null;
+		var that = object(spec);
+		
+		that.update = function() {
+		}
+
+		that.draw = function(ctx) {
+			ctx.fillStyle = "#000";
+			var x = that.pos[1] * TILE_SIZE + TILE_SIZE/4;
+			var y = that.pos[0] * TILE_SIZE + TILE_SIZE/4;
+			var width = TILE_SIZE/2;
+			var height = TILE_SIZE/2;
+			ctx.fillRect(x, y, width, height);
+		}
+
+		that.onCollide = function() {
+		}
+
+		that.onTalk = function() {
+			alert("Hello Traveler!");
+		}
+
+		return that;
+	}
+
 	return {
+		object: object,
 		player: player,
-		object: object
+		npc: npc
 	}
 })

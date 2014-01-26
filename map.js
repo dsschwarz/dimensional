@@ -1,4 +1,4 @@
-define(["globals"],function (_g) {
+define(["globals", "objects"],function (_g, _o) {
 	var TILE_SIZE = _g.TILE_SIZE;
 	/**
 	 * @class map
@@ -61,6 +61,8 @@ define(["globals"],function (_g) {
 
 		that.getObjsAtPos = function (row, col) {
 			var objects = [];
+
+			//TODO: Check if we are in bounds before we access out-of-bounds
 			for (var i = 0; i < that.objects.length; i++) {
 				if (that.objects[i].pos[0] === row && that.objects[i].pos[1] === col) {
 					objects.push(that.objects[1]);
@@ -95,6 +97,23 @@ define(["globals"],function (_g) {
 			}
 			return false;
 		}
+
+
+		that.populate = function(mapData) {
+			console.log("Populating...");
+			for (var i = 0; i < mapData.length; i++) {
+				var item = mapData[i];
+				if (item.type == _g.types.NPC) {
+					var spec = {
+							pos: [item.pos.row, item.pos.col], 
+							map: that
+					};
+					var test = _o.npc(spec);
+					that.addObj(_o.npc(spec));
+				}
+			}
+		}
+
 		return that;
 	}
 

@@ -19,11 +19,27 @@ define(function() {
 		38: "fireUp",
 		32: "stop",
 
+		61: "action", //"="
+
 		49: "setColorRed", // 1
 		50: "setColorGreen", // 2
 		51: "setColorBlue", // 3
 
 		16: "shiftSelf" // shift key enables shifting self with number key
+	};
+
+	returnObject.types = {
+		PLAYER: 0,
+		NPC: 1,
+		ITEM: 2
+	};
+
+	returnObject.kinds = {
+		npc: {
+			alice: 0,
+			bob: 1, 
+			charlie: 2
+		}
 	};
 
 	returnObject.getObjById = function(id) {
@@ -32,26 +48,5 @@ define(function() {
 	};
 
 	// Shift an object from on map to another
-	returnObject.shiftObject = function(id, color) {
-		var targetMap;
-		switch (color) {
-		case "red":
-			targetMap = returnObject.map1;
-			break;
-		case "green":
-			targetMap = returnObject.map2;
-			break;
-		case "blue":
-			targetMap = returnObject.map3;
-			break;
-		default:
-			console.log("Unrecognized color - " + color);
-			return; // Exit function - do not shift object
-		}
-		var obj = returnObject.getObjById(id);
-		obj.map.delObj(obj.id);
-		obj.map = targetMap;
-		targetMap.addObj(obj);
-	};
 	return returnObject; 
 })
