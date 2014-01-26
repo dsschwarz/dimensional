@@ -24,7 +24,7 @@ require(["objects", "map", "globals", "events", "data", "ui"], function (_o, _m,
 		// Initialize the game
 		var canvas = document.getElementById("game-canvas");
 		var ctx = canvas.getContext("2d");
-		canvas.width = 600;
+		canvas.width = 620;
 		canvas.height = 600;
 		var redMap = _m.map( {size: {rows: 20, cols: 30}, color: "#d33"} );
 		var greenMap = _m.map( {size: {rows: 20, cols: 30}, color: "#3d3"} );
@@ -41,7 +41,6 @@ require(["objects", "map", "globals", "events", "data", "ui"], function (_o, _m,
 		}));
 		redMap.populate(_d.mapData.map1);
 		redMap.draw(ctx);
-		
 		_g.map1 = redMap;
 		_g.map2 = greenMap;
 		_g.map3 = blueMap;

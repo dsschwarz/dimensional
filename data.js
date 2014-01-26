@@ -37,7 +37,13 @@ define(["globals"], function(_g) {
 					type: _g.types.ITEM,
 					kind: _g.kinds.item.banana,
 					pos: {col: 15, row: 15}
+				},
+				{
+					type: _g.types.ITEM,
+					kind: _g.kinds.item.fuel,
+					pos: {col: 15, row: 10}
 				}
+
 				
 			]
 		},
@@ -70,5 +76,4 @@ define(["globals"], function(_g) {
 			}
 		}
 	};
-		
 });

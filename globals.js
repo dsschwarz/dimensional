@@ -42,7 +42,8 @@ define(function() {
 		},
 		item: {
 			banana: 0,
-			rock: 1
+			rock: 1,
+			fuel: 2
 		}
 	};
 

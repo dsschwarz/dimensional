@@ -42,7 +42,7 @@ define(["globals", "ui"],function (_g, _u) {
 				break;
 
 			case "shiftSelf":
-				_g.getObjById(event.id).shiftObject(event.color);
+				_g.getObjById(event.id).shiftSelf(event.color);
 				break;
 
 			case "action":
