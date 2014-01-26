@@ -220,10 +220,10 @@ define(["globals", "objects"], function (_g, _o) {
 
 		that.findAction = function() {
 			var objs = [];
-			objs.push.apply(that.map.getObjsAtPos(that.pos[0]+1, that.pos[1]));
-			objs.push.apply(that.map.getObjsAtPos(that.pos[0]-1, that.pos[1]));
-			objs.push.apply(that.map.getObjsAtPos(that.pos[0], that.pos[1]+1));
-			objs.push.apply(that.map.getObjsAtPos(that.pos[0], that.pos[1]-1));
+			objs.push.apply(objs, that.map.getObjsAtPos(that.pos[0]+1, that.pos[1]));
+			objs.push.apply(objs, that.map.getObjsAtPos(that.pos[0]-1, that.pos[1]));
+			objs.push.apply(objs, that.map.getObjsAtPos(that.pos[0], that.pos[1]+1));
+			objs.push.apply(objs, that.map.getObjsAtPos(that.pos[0], that.pos[1]-1));
 
 			if (objs.length == 1) {
 				var obj = objs[0];
