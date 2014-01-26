@@ -1,4 +1,4 @@
-define(["globals"],function (_g) {
+define(["globals", "objects"],function (_g, _o) {
 	var TILE_SIZE = _g.TILE_SIZE;
 	/**
 	 * @class map
@@ -18,7 +18,7 @@ define(["globals"],function (_g) {
 		if (spec.size) {
 			for (var i = 0; i < that.rows; i++) {
 				for (var j = 0; j < that.cols; j++) {
-					that.tiles.push(tile( {pos: [i, j], color: spec.color} ))
+					that.tiles.push(tile( {pos: [i, j], color: spec.color} ));
 				};
 			};
 		}
@@ -29,10 +29,10 @@ define(["globals"],function (_g) {
 		 */
 		that.draw = function (ctx) {
 			for (var i = 0; i < that.tiles.length; i++) {
-				that.tiles[i].draw(ctx)
+				that.tiles[i].draw(ctx);
 			};
 			for (var i = 0; i < that.objects.length; i++) {
-				that.objects[i].draw(ctx)
+				that.objects[i].draw(ctx);
 			};
 		}
 
@@ -42,7 +42,7 @@ define(["globals"],function (_g) {
 		 */
 		that.update = function (ms) {
 			for (var i = 0; i < that.objects.length; i++) {
-				that.objects[i].update(ms)
+				that.objects[i].update(ms);
 			};
 		}
 
@@ -53,7 +53,7 @@ define(["globals"],function (_g) {
 		that.getObjById = function (id) {
 			for (var i = 0; i < that.objects.length; i++) {
 				if (that.objects[i].id === id) {
-					return that.objects[i]
+					return that.objects[i];
 				}
 			};
 			return null;
@@ -61,6 +61,8 @@ define(["globals"],function (_g) {
 
 		that.getObjsAtPos = function (row, col) {
 			var objects = [];
+
+			//TODO: Check if we are in bounds before we access out-of-bounds
 			for (var i = 0; i < that.objects.length; i++) {
 				if (that.objects[i].pos[0] === row && that.objects[i].pos[1] === col) {
 					objects.push(that.objects[1]);
@@ -95,6 +97,23 @@ define(["globals"],function (_g) {
 			}
 			return false;
 		}
+
+
+		that.populate = function(mapData) {
+			console.log("Populating...");
+			for (var i = 0; i < mapData.length; i++) {
+				var item = mapData[i];
+				if (item.type == _g.types.NPC) {
+					var spec = {
+							pos: [item.pos.row, item.pos.col], 
+							map: that
+					};
+					var test = _o.npc(spec);
+					that.addObj(_o.npc(spec));
+				}
+			}
+		}
+
 		return that;
 	}
 
