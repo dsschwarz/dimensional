@@ -6,7 +6,7 @@ define(["globals"], function(_g) {
 				type: _g.types.NPC, 
 				kind: _g.kinds.npc.alice,
 				name: "Alice",
-				color: "#fff",
+				color: "#f0f",
 				sprite: "",
 				pos: {col: 1, row: 10}
 			},
@@ -14,7 +14,7 @@ define(["globals"], function(_g) {
 				type: _g.types.NPC, 
 				kind: _g.kinds.npc.bob,
 				name: "Bob",
-				color: "#aaa",
+				color: "#ff0",
 				sprite: "jfkds",
 				pos: {col: 20, row: 10}
 			}

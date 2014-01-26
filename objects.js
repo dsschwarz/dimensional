@@ -243,6 +243,7 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 		var that = object(spec);
 
 		that.name = spec.name;
+		that.color = spec.color;
 		
 		that.update = function() {
 		}
@@ -253,6 +254,7 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 			var y = that.pos[0] * TILE_SIZE + TILE_SIZE/4;
 			var width = TILE_SIZE/2;
 			var height = TILE_SIZE/2;
+			ctx.fillStyle = that.color;
 			ctx.fillRect(x, y, width, height);
 		}
 
@@ -268,9 +270,7 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 			subctx.fillStyle = "#f00";
 			subctx.fillRect(0,0,100,100);
 
-			_u.avatar = subcan;
-			_u.name = that.name;
-			_u.message = "Hello!";
+			_u.displayMessage(that.name, "Hello!", subcan);
 		}
 
 		that.onTeleport = function() {

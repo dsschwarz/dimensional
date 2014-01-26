@@ -12,6 +12,7 @@ require(["objects", "map", "globals", "events", "data", "ui"], function (_o, _m,
 	 */
 	function tick (callback) {
 		var TIMER_LASTCALL = Date.now();
+		//TODO: Change this to window.requestAnimationFrame
 		return setInterval(function() {
 			var msDuration = (Date.now() - TIMER_LASTCALL);
 			TIMER_LASTCALL = Date.now();
