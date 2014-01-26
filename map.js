@@ -107,7 +107,11 @@ define(["globals", "objects"],function (_g, _o) {
 				if (item.type == _g.types.NPC) {
 					var spec = {
 							pos: [item.pos.row, item.pos.col], 
-							map: that
+							map: that,
+							name: item.name,
+							color: item.color,
+							kind: item.kind
+
 					};
 					var test = _o.npc(spec);
 					that.addObj(_o.npc(spec));

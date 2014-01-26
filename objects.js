@@ -1,4 +1,4 @@
-define(["globals", "objects"], function (_g, _o) {
+define(["globals", "objects", "ui"], function (_g, _o, _u) {
 	var TILE_SIZE = _g.TILE_SIZE;
 	var objectId = 0;
 	/**
@@ -97,15 +97,15 @@ define(["globals", "objects"], function (_g, _o) {
 		// Local function to check for objects and handle collision with them
 		function handleCollision(row, col) {
 			var objects = map.getObjsAtPos(row, col);
-			for (var i in objects) {
-				var obj = objects[i];
+			for (var idx in objects) {
+				var obj = objects[idx];
 				console.log("Found obj", obj);
 				if (obj.type === _g.types.PLAYER) {
 					obj.shiftObject(color)
 				}
 
 				else if (obj.type === _g.types.NPC) {
-					o.handleTeleport();
+					obj.onTeleport();
 				}
 			}
 		}
@@ -241,6 +241,8 @@ define(["globals", "objects"], function (_g, _o) {
 		spec.type = _g.types.NPC;
 		spec.kind = null;
 		var that = object(spec);
+
+		that.name = spec.name;
 		
 		that.update = function() {
 		}
@@ -258,7 +260,21 @@ define(["globals", "objects"], function (_g, _o) {
 		}
 
 		that.onTalk = function() {
-			alert("Hello Traveler!");
+			var subcan = document.createElement("canvas");
+			subcan.height = 100;
+			subcan.width = 100;
+			var subctx = subcan.getContext("2d");
+
+			subctx.fillStyle = "#f00";
+			subctx.fillRect(0,0,100,100);
+
+			_u.avatar = subcan;
+			_u.name = that.name;
+			_u.message = "Hello!";
+		}
+
+		that.onTeleport = function() {
+			alert("AHHH!");
 		}
 
 		return that;

@@ -2,7 +2,7 @@ require.config({
 	// Put config in here
 })
 
-require(["objects", "map", "globals", "events", "data"], function (_o, _m, _g, _e, _d) {
+require(["objects", "map", "globals", "events", "data", "ui"], function (_o, _m, _g, _e, _d, _u) {
 	// 'Class' definitions
 	// spec is the options hash passed to each 'constructor'
 
@@ -16,7 +16,7 @@ require(["objects", "map", "globals", "events", "data"], function (_o, _m, _g, _
 			var msDuration = (Date.now() - TIMER_LASTCALL);
 			TIMER_LASTCALL = Date.now();
 			callback(msDuration);
-		}, 0);
+		}, 1000/60);
 	}
 
 	function main() {
@@ -54,6 +54,7 @@ require(["objects", "map", "globals", "events", "data"], function (_o, _m, _g, _
 			_g.map2.update(ms);
 			_g.map3.update(ms);
 			currentMap.draw(ctx);
+			_u.draw(ctx);
 		})
 	};
 	main();
