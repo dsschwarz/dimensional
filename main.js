@@ -32,8 +32,12 @@ require(["objects", "map", "globals", "events", "data"], function (_o, _m, _g, _
 			map: redMap, 
 			pos: [1, 2], 
 			moving: false
-		})
+		});
 		redMap.objects.push(p1);
+		greenMap.addObj(_o.player({
+			pos: [1, 2], 
+			moving: false
+		}));
 		redMap.populate(_d.map1);
 		redMap.draw(ctx);
 		

@@ -65,13 +65,14 @@ define(["globals", "objects"],function (_g, _o) {
 			//TODO: Check if we are in bounds before we access out-of-bounds
 			for (var i = 0; i < that.objects.length; i++) {
 				if (that.objects[i].pos[0] === row && that.objects[i].pos[1] === col) {
-					objects.push(that.objects[1]);
+					objects.push(that.objects[i]);
 				}
 			};
 			return objects;
 		}
 
 		that.addObj = function (object) {
+			object.map = that;
 			that.objects.push(object);
 		}
 

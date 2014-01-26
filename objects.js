@@ -57,6 +57,7 @@ define(["globals", "objects"], function (_g, _o) {
 		}
 
 		that.shiftObject = function(color) {
+			console.log("shift", that)
 			var targetMap;
 			switch (color) {
 			case "red":
@@ -96,12 +97,14 @@ define(["globals", "objects"], function (_g, _o) {
 		// Local function to check for objects and handle collision with them
 		function handleCollision(row, col) {
 			var objects = map.getObjsAtPos(row, col);
-			for (var o in objects) {
-				if (o.type === _g.types.PLAYER) {
-					_g.shiftObject(o.id);
+			for (var i in objects) {
+				var obj = objects[i];
+				console.log("Found obj", obj);
+				if (obj.type === _g.types.PLAYER) {
+					obj.shiftObject(color)
 				}
 
-				else if (o.type === _g.types.NPC) {
+				else if (obj.type === _g.types.NPC) {
 					o.handleTeleport();
 				}
 			}
@@ -150,6 +153,7 @@ define(["globals", "objects"], function (_g, _o) {
 		}
 
 		function init() {
+			console.log("Laser init");
 			// detect a hit
 			switch (dir) {
 			case "left":
@@ -169,7 +173,7 @@ define(["globals", "objects"], function (_g, _o) {
 				};
 				break;
 			case "down":
-				for (var i = row - 1; i < map.rows; i++) {
+				for (var i = row + 1; i < map.rows; i++) {
 					handleCollision(i, col);
 				};
 				break;
@@ -201,10 +205,9 @@ define(["globals", "objects"], function (_g, _o) {
 			if (fireDir) {
 				if (fireDelay <= 0) {
 					that.map.addObj(laser({direction: fireDir, pos: that.pos, map: that.map, color: fireColor}));
-					console.log("Fried-", that.map)
-					// Space out shots by 1 sec (500 ms delay, 500 ms to charge)
 					fireDelay = 1000;
 					fireDir = null;
+					// Space out shots by 1 sec (500 ms delay, 500 ms to charge)
 				} else {
 					fireDelay -= ms;
 				}
@@ -222,9 +225,9 @@ define(["globals", "objects"], function (_g, _o) {
 			objs.append(that.map.findObjAtPos(that.pos[0], that.pos[1]+1));
 			objs.append(that.map.findObjAtPos(that.pos[0], that.pos[1]-1));
 
-			if (obj.length == 1) {
-				if (obj.type == _g.types.NPC) {
-					obj.onTalk();
+			if (objs.length == 1) {
+				if (objs[0].type == _g.types.NPC) {
+					objs[0].onTalk();
 				}
 			}
 		}
