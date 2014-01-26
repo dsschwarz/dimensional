@@ -79,24 +79,6 @@ define(["globals"], function (_g) {
 			}
 		}
 
-		// detect a hit
-		if (dir === "left") {
-			for (var i = col - 1; i > 0; i--) {
-				handleCollision(row, i);
-			};
-		} else if (dir === "right") {
-			for (var i = col + 1; i < map.cols - 1; i++) {
-				handleCollision(row, i);
-			};
-		} else if (dir === "up") {
-			for (var i = row - 1; i > 0; i--) {
-				handleCollision(i, col);
-			};
-		} else if (dir === "down") {
-			for (var i = row - 1; i < map.rows; i++) {
-				handleCollision(i, col);
-			};
-		}
 
 		that.update = function(ms) {
 			timer -= ms;
@@ -138,6 +120,29 @@ define(["globals"], function (_g) {
 			}
 			ctx.fillRect (x, y, width, height);
 		}
+
+		function init() {
+			// detect a hit
+			if (dir === "left") {
+				for (var i = col - 1; i > 0; i--) {
+					handleCollision(row, i);
+				};
+			} else if (dir === "right") {
+				for (var i = col + 1; i < map.cols - 1; i++) {
+					handleCollision(row, i);
+				};
+			} else if (dir === "up") {
+				for (var i = row - 1; i > 0; i--) {
+					handleCollision(i, col);
+				};
+			} else if (dir === "down") {
+				for (var i = row - 1; i < map.rows; i++) {
+					handleCollision(i, col);
+				};
+			}
+		}
+		init();
+
 		return that;
 	}
 
