@@ -46,8 +46,18 @@ define(["globals", "objects", "ui"], function(_g, _o, _u) {
 			_u.displayMessage(that.name, "Hello!", subcan);
 		}
 
-		that.onTeleport = function() {
-			alert("AHHH!");
+		that.onTeleport = function(color) {
+			var subcan = document.createElement("canvas");
+			subcan.height = 100;
+			subcan.width = 100;
+
+			var subctx = subcan.getContext("2d");
+			subctx.fillStyle = "#f00";
+			subctx.fillRect(0,0,100,100);
+
+			that.shiftObject(color)
+
+			_u.displayMessage(that.name, "AHHHH", subcan);
 		}
 
 		return that;

@@ -28,8 +28,8 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 					var dir = that.direction;
 					if (dir === "up") {
 						if (that.pos[0] > 0) {
-							if (that.map.getObjsAtPos(that.pos[0] - 1, that.pos[1]).length > 0){
-								var objs = that.map.getObjsAtPos(that.pos[0] - 1, that.pos[1]);
+							var objs = that.map.getObjsAtPos(that.pos[0] - 1, that.pos[1]);
+							if (objs.length > 0){
 								var hardCollide = false;
 								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
 							} 
@@ -37,21 +37,10 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 								that.pos[0] -= 1;
 							}
 						}
-					} else if (dir === "right") {
-						if (that.pos[1] < that.map.cols - 1) {
-							if (that.map.getObjsAtPos(that.pos[0] + 1, that.pos[1]).length > 0) {
-								var objs = that.map.getObjsAtPos(that.pos[0] + 1, that.pos[1]);
-								var hardCollide = false;
-								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
-							}
-							if (!hardCollide) {
-								that.pos[1] += 1;
-							}
-						}
 					} else if (dir === "down") {
 						if (that.pos[0] < that.map.rows - 1) {
-							if (that.map.getObjsAtPos(that.pos[0], that.pos[1] + 1).length > 0) {
-								var objs = that.map.getObjsAtPos(that.pos[0], that.pos[1] + 1);
+							var objs = that.map.getObjsAtPos(that.pos[0] + 1, that.pos[1]);
+							if (objs.length > 0) {
 								var hardCollide = false;
 								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
 							}
@@ -59,10 +48,21 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 								that.pos[0] += 1;
 							}
 						}
+					} else if (dir === "right") {
+						if (that.pos[1] < that.map.cols - 1) {
+							var objs = that.map.getObjsAtPos(that.pos[0], that.pos[1] + 1);
+							if (objs.length > 0) {
+								var hardCollide = false;
+								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
+							}
+							if (!hardCollide) {
+								that.pos[1] += 1;
+							}
+						}
 					} else if (dir === "left") {
 						if (that.pos[1] > 0) {
-							if (that.map.getObjsAtPos(that.pos[0], that.pos[1] - 1).length > 0){
-								var objs = that.map.getObjsAtPos(that.pos[0], that.pos[1] - 1);
+							var objs = that.map.getObjsAtPos(that.pos[0], that.pos[1] - 1);
+							if (objs.length > 0){
 								var hardCollide = false;
 								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
 							}
@@ -89,6 +89,7 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 			ctx.fillRect (x, y, TILE_SIZE, TILE_SIZE);
 		}
 
+		// Shifts an object to map of target color
 		that.shiftObject = function(color) {
 			console.log("shift", that)
 			var targetMap;
@@ -142,7 +143,7 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 				}
 
 				else if (obj.type === _g.types.NPC) {
-					obj.onTeleport();
+					obj.onTeleport(color);
 				}
 			}
 		}
@@ -189,6 +190,7 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 			ctx.fillRect (x, y, width, height);
 		}
 
+		//
 		function init() {
 			console.log("Laser init");
 			// detect a hit
@@ -261,6 +263,21 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 			objs.push.apply(objs, that.map.getObjsAtPos(that.pos[0]-1, that.pos[1]));
 			objs.push.apply(objs, that.map.getObjsAtPos(that.pos[0], that.pos[1]+1));
 			objs.push.apply(objs, that.map.getObjsAtPos(that.pos[0], that.pos[1]-1));
+			// switch(that.direction) {
+			// case "down":
+			// 	objs.append(that.map.findObjAtPos(that.pos[0]+1, that.pos[1]));
+			// 	break;
+			// case "up":
+			// 	objs.append(that.map.findObjAtPos(that.pos[0]+1, that.pos[1]));
+			// 	break;
+			// case "left":
+			// 	objs.append(that.map.findObjAtPos(that.pos[0], that.pos[1]-1));
+			// 	break;
+			// case "right":
+			// 	objs.append(that.map.findObjAtPos(that.pos[0], that.pos[1]+1));
+			// 	break;
+
+			// }
 
 			if (objs.length == 1) {
 				var obj = objs[0];
