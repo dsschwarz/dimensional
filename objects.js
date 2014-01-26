@@ -220,14 +220,15 @@ define(["globals", "objects"], function (_g, _o) {
 
 		that.findAction = function() {
 			var objs = [];
-			objs.append(that.map.findObjAtPos(that.pos[0]+1, that.pos[1]));
-			objs.append(that.map.findObjAtPos(that.pos[0]-1, that.pos[1]));
-			objs.append(that.map.findObjAtPos(that.pos[0], that.pos[1]+1));
-			objs.append(that.map.findObjAtPos(that.pos[0], that.pos[1]-1));
+			objs.push.apply(that.map.getObjsAtPos(that.pos[0]+1, that.pos[1]));
+			objs.push.apply(that.map.getObjsAtPos(that.pos[0]-1, that.pos[1]));
+			objs.push.apply(that.map.getObjsAtPos(that.pos[0], that.pos[1]+1));
+			objs.push.apply(that.map.getObjsAtPos(that.pos[0], that.pos[1]-1));
 
 			if (objs.length == 1) {
-				if (objs[0].type == _g.types.NPC) {
-					objs[0].onTalk();
+				var obj = objs[0];
+				if (obj.type == _g.types.NPC) {
+					obj.onTalk();
 				}
 			}
 		}
