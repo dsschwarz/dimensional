@@ -20,6 +20,8 @@ define(["globals", "ui"],function (_g, _u) {
 				//}
 				obj.moving = true;
 				obj.direction = event.direction;
+
+				_u.clearMessage();
 				break;
 
 			case "stop":

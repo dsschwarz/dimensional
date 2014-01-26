@@ -45,6 +45,9 @@ define(["globals", "objects", "data", "ui", "util"], function(_g, _o, _d, _u, _u
 				case _g.kinds.item.rock:
 					break;
 				case _g.kinds.item.fuel:
+					var data = _d.itemData.fuel;
+					var subcan = _util.createCircleCanvas(50, data.color);
+					_u.displayMessage(data.name, data.messages.description, subcan);
 					break;
 				default:
 					break;
