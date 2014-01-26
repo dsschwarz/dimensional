@@ -27,7 +27,7 @@ define(["globals", "objects", "ui"], function(_g, _o, _u) {
 			subcan.width = 100;
 			var subctx = subcan.getContext("2d");
 
-			subctx.fillStyle = "#f00";
+			subctx.fillStyle = that.color
 			subctx.fillRect(0,0,100,100);
 
 			_u.displayMessage(that.name, "Watch it!", subcan);
@@ -40,7 +40,7 @@ define(["globals", "objects", "ui"], function(_g, _o, _u) {
 			subcan.width = 100;
 			var subctx = subcan.getContext("2d");
 
-			subctx.fillStyle = "#f00";
+			subctx.fillStyle = that.color; 
 			subctx.fillRect(0,0,100,100);
 
 			_u.displayMessage(that.name, "Hello!", subcan);
