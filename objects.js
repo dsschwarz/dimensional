@@ -80,22 +80,28 @@ define(["globals"], function (_g) {
 		}
 
 		// detect a hit
-		if (dir === "left") {
+		switch (dir) {
+		case "left":
 			for (var i = col - 1; i > 0; i--) {
 				handleCollision(row, i);
 			};
-		} else if (dir === "right") {
+			break;
+
+		case "right":
 			for (var i = col + 1; i < map.cols - 1; i++) {
 				handleCollision(row, i);
 			};
-		} else if (dir === "up") {
+			break;
+		case "up":
 			for (var i = row - 1; i > 0; i--) {
 				handleCollision(i, col);
 			};
-		} else if (dir === "down") {
+			break;
+		case "down":
 			for (var i = row - 1; i < map.rows; i++) {
 				handleCollision(i, col);
 			};
+			break;
 		}
 
 		that.update = function(ms) {
