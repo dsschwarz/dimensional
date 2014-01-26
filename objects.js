@@ -191,6 +191,10 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 
 		function init() {
 			console.log("Laser init");
+
+			var sound = new Audio("res/buzz.mp3");
+			sound.play();
+
 			// detect a hit
 			switch (dir) {
 			case "left":
