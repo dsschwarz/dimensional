@@ -17,9 +17,9 @@ define(function() {
 		39: "fireRight", 
 		40: "fireDown",
 		38: "fireUp",
-		32: "stop",
+		//32: "stop",
 
-		61: "action", //"="
+		32: "action", //"<Space>"
 
 		49: "setColorRed", // 1
 		50: "setColorGreen", // 2
@@ -41,7 +41,9 @@ define(function() {
 			charlie: 2
 		},
 		item: {
-			fuel: 0
+			banana: 0,
+			rock: 1,
+			fuel: 2
 		}
 	};
 

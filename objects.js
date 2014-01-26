@@ -217,10 +217,12 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 		spec.kind = null;
 
 		var that = object(spec);
+		that.fuel = 0;
+		
 		var fireDelay = 500,
 			fireDir = null,
-			fireColor = "green",
-			fuel = 0;
+			fireColor = "green";
+
 		that.fire = function (dir) {
 			fireDir = dir;
 		}
@@ -235,6 +237,8 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 					that.map.addObj(laser({direction: fireDir, pos: that.pos, map: that.map, color: fireColor}));
 					fireDelay = 1000;
 					fireDir = null;
+
+					that.fuel -= 1;
 					// Space out shots by 1 sec (500 ms delay, 500 ms to charge)
 				} else {
 					fireDelay -= ms;
