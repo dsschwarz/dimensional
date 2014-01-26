@@ -108,9 +108,11 @@ define(["globals", "objects", "npc"],function (_g, _o, _npc) {
 					var spec = {
 							pos: [item.pos.row, item.pos.col], 
 							map: that,
+							kind: item.kind,
+
 							name: item.name,
 							color: item.color,
-							kind: item.kind
+							messages: item.messages
 
 					};
 					that.addObj(_npc(spec));

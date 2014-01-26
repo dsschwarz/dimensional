@@ -7,6 +7,9 @@ define(["globals", "objects", "ui"], function(_g, _o, _u) {
 
 		that.name = spec.name;
 		that.color = spec.color;
+		that.messages = spec.messages;
+
+		that.firstTalk = false;
 		
 		that.update = function() {
 		}
@@ -30,7 +33,7 @@ define(["globals", "objects", "ui"], function(_g, _o, _u) {
 			subctx.fillStyle = that.color
 			subctx.fillRect(0,0,100,100);
 
-			_u.displayMessage(that.name, "Watch it!", subcan);
+			_u.displayMessage(that.name, that.messages.collide, subcan);
 			return true;
 		}
 
@@ -43,7 +46,12 @@ define(["globals", "objects", "ui"], function(_g, _o, _u) {
 			subctx.fillStyle = that.color; 
 			subctx.fillRect(0,0,100,100);
 
-			_u.displayMessage(that.name, "Hello!", subcan);
+			if (!firstTalk) {
+				firstTalk = true;
+				_u.displayMessage(that.name, that.messages.firstTalk, subcan);
+			} else {
+				_u.displayMessage(that.name, that.messages.normal[Math.floor(Math.random() * that.messages.normal.length)], subcan);
+			}
 		}
 
 		that.onTeleport = function(color) {
@@ -52,12 +60,12 @@ define(["globals", "objects", "ui"], function(_g, _o, _u) {
 			subcan.width = 100;
 
 			var subctx = subcan.getContext("2d");
-			subctx.fillStyle = "#f00";
+			subctx.fillStyle = that.color;
 			subctx.fillRect(0,0,100,100);
 
 			that.shiftObject(color)
 
-			_u.displayMessage(that.name, "AHHHH", subcan);
+			_u.displayMessage(that.name, that.messages.teleport[Math.floor(Math.random() * that.messages.teleport.length)], subcan);
 		}
 
 		return that;
