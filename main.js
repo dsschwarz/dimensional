@@ -2,7 +2,7 @@ require.config({
 	// Put config in here
 })
 
-require(["objects", "map", "globals", "events"], function (_o, _m, _g, _e) {
+require(["objects", "map", "globals", "events", "data"], function (_o, _m, _g, _e, _d) {
 	// 'Class' definitions
 	// spec is the options hash passed to each 'constructor'
 
@@ -34,11 +34,13 @@ require(["objects", "map", "globals", "events"], function (_o, _m, _g, _e) {
 			moving: false
 		})
 		redMap.objects.push(p1);
+		redMap.populate(_d.map1);
 		redMap.draw(ctx);
 		
 		_g.map1 = redMap;
 		_g.map2 = greenMap;
 		_g.map3 = blueMap;
+
 		_g.player1 = p1;
 
 		// Start the game loop
