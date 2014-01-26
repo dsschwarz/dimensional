@@ -116,6 +116,10 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 			return false;
 		}
 
+		that.onAction = function() {
+		}
+
+
 		return that;
 	}
 	
@@ -287,6 +291,9 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 				var obj = objs[0];
 				if (obj.type == _g.types.NPC) {
 					obj.onTalk();
+				}
+				else {
+					obj.onAction();
 				}
 			}
 		}

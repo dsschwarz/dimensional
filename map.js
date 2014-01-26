@@ -1,4 +1,4 @@
-define(["globals", "objects", "npc"],function (_g, _o, _npc) {
+define(["globals", "objects", "npc", "item"],function (_g, _o, _npc, _item) {
 	var TILE_SIZE = _g.TILE_SIZE;
 	/**
 	 * @class map
@@ -116,6 +116,14 @@ define(["globals", "objects", "npc"],function (_g, _o, _npc) {
 
 					};
 					that.addObj(_npc(spec));
+				}
+				else if (item.type == _g.types.ITEM) {
+					var spec = {
+							pos: [item.pos.row, item.pos.col], 
+							map: that,
+							kind: item.kind,
+					};
+					that.addObj(_item(spec));
 				}
 			}
 		}

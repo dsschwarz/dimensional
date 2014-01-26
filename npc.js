@@ -1,4 +1,4 @@
-define(["globals", "objects", "ui"], function(_g, _o, _u) {
+define(["globals", "objects", "ui", "util"], function(_g, _o, _u, _util) {
 	var TILE_SIZE = _g.TILE_SIZE;
 	function npc(spec) {
 		spec.type = _g.types.NPC;
@@ -25,26 +25,14 @@ define(["globals", "objects", "ui"], function(_g, _o, _u) {
 		}
 
 		that.onCollide = function(obj) {
-			var subcan = document.createElement("canvas");
-			subcan.height = 100;
-			subcan.width = 100;
-			var subctx = subcan.getContext("2d");
-
-			subctx.fillStyle = that.color
-			subctx.fillRect(0,0,100,100);
+			var subcan = _util.createSolidCanvas(100, 100, that.color);
 
 			_u.displayMessage(that.name, that.messages.collide, subcan);
 			return true;
 		}
 
 		that.onTalk = function() {
-			var subcan = document.createElement("canvas");
-			subcan.height = 100;
-			subcan.width = 100;
-			var subctx = subcan.getContext("2d");
-
-			subctx.fillStyle = that.color; 
-			subctx.fillRect(0,0,100,100);
+			var subcan = _util.createSolidCanvas(100, 100, that.color);
 
 			if (!firstTalk) {
 				firstTalk = true;

@@ -39,7 +39,7 @@ require(["objects", "map", "globals", "events", "data", "ui"], function (_o, _m,
 			pos: [1, 2], 
 			moving: false
 		}));
-		redMap.populate(_d.map1);
+		redMap.populate(_d.mapData.map1);
 		redMap.draw(ctx);
 		
 		_g.map1 = redMap;
