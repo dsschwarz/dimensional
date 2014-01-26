@@ -1,4 +1,4 @@
-define(["globals"],function (_g) {
+define(["globals", "ui"],function (_g, _u) {
 	var shiftEnabled = false; // Switching colors shifts player
 
 	// Stub
@@ -46,6 +46,7 @@ define(["globals"],function (_g) {
 				break;
 
 			case "action":
+				_u.nextMessage();
 				_g.player1.findAction();
 				break;
 

@@ -22,7 +22,15 @@ define(["globals", "objects", "ui"], function(_g, _o, _u) {
 		}
 
 		that.onCollide = function(obj) {
-			console.log("OW!");
+			var subcan = document.createElement("canvas");
+			subcan.height = 100;
+			subcan.width = 100;
+			var subctx = subcan.getContext("2d");
+
+			subctx.fillStyle = "#f00";
+			subctx.fillRect(0,0,100,100);
+
+			_u.displayMessage(that.name, "Watch it!", subcan);
 			return true;
 		}
 

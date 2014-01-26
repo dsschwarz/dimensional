@@ -26,17 +26,20 @@ define(function() {
 
 	};
 
-	/* {} spec members
-	 * 
-	 * string name
-	 * string message
-	 * canvas avatar - canvas to draw to avatar box
-	 */
 	ui.displayMessage = function(name, message, avatar) {
 		ui.name = name;
 		ui.message = message;
 		ui.avatar = avatar;
 	}
+
+	ui.nextMessage = function() {
+		//TODO: Stub
+		ui.avatar = null;
+		ui.message = null;
+		ui.name = null;
+	}
+
+
 
 	return ui;
 
