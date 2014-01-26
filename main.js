@@ -41,7 +41,7 @@ require(["objects", "map", "globals", "events", "data", "ui"], function (_o, _m,
 		}));
 		redMap.populate(_d.map1);
 		redMap.draw(ctx);
-		
+		greenMap.populate(_d.map2)
 		_g.map1 = redMap;
 		_g.map2 = greenMap;
 		_g.map3 = blueMap;

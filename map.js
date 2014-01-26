@@ -114,6 +114,18 @@ define(["globals", "objects", "npc"],function (_g, _o, _npc) {
 
 					};
 					that.addObj(_npc(spec));
+				} else if (item.type == _g.types.ITEM) {
+					var spec = {
+							pos: [item.pos.row, item.pos.col], 
+							map: that,
+							name: item.name,
+							color: item.color,
+							kind: item.kind
+
+					};
+					if (item.kind === _g.kinds.item.fuel) {
+						that.addObj(_o.fuel(spec));
+					}
 				}
 			}
 		}

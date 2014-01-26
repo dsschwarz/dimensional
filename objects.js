@@ -21,55 +21,40 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 		};
 		var moveTimer = 0; // Can only move when timer hits 0
 
+		// check if can move into square
+		function checkCollisions(row, col) {
+			var hardCollide = false;
+			// Return true if target pos is out of bounds
+			if ((row < 0) || (row > that.map.rows - 1) || (col < 0) ||  (col > that.map.cols - 1)) {
+				return true;
+			}
+			var objs = that.map.getObjsAtPos(row, col);
+			if (objs.length > 0){
+				for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
+			} 
+			return hardCollide;
+		}
+
 		that.update = function (ms) {
 			if (that.moving) {
 				if (moveTimer < 0) {
 					console.log("moving");
 					var dir = that.direction;
 					if (dir === "up") {
-						if (that.pos[0] > 0) {
-							var objs = that.map.getObjsAtPos(that.pos[0] - 1, that.pos[1]);
-							if (objs.length > 0){
-								var hardCollide = false;
-								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
-							} 
-							if (!hardCollide) {
-								that.pos[0] -= 1;
-							}
+						if (!checkCollisions(that.pos[0] - 1, that.pos[1])) {
+							that.pos[0] -= 1;
 						}
 					} else if (dir === "down") {
-						if (that.pos[0] < that.map.rows - 1) {
-							var objs = that.map.getObjsAtPos(that.pos[0] + 1, that.pos[1]);
-							if (objs.length > 0) {
-								var hardCollide = false;
-								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
-							}
-							if (!hardCollide) {
-								that.pos[0] += 1;
-							}
+						if (!checkCollisions(that.pos[0] + 1, that.pos[1])) {
+							that.pos[0] += 1;
 						}
 					} else if (dir === "right") {
-						if (that.pos[1] < that.map.cols - 1) {
-							var objs = that.map.getObjsAtPos(that.pos[0], that.pos[1] + 1);
-							if (objs.length > 0) {
-								var hardCollide = false;
-								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
-							}
-							if (!hardCollide) {
-								that.pos[1] += 1;
-							}
+						if (!checkCollisions(that.pos[0], that.pos[1] + 1)) {
+							that.pos[1] += 1;
 						}
 					} else if (dir === "left") {
-						if (that.pos[1] > 0) {
-							var objs = that.map.getObjsAtPos(that.pos[0], that.pos[1] - 1);
-							if (objs.length > 0){
-								var hardCollide = false;
-								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
-							}
-							if (!hardCollide) {
-								that.pos[1] -= 1;
-							}
-
+						if (!checkCollisions(that.pos[0], that.pos[1] - 1)) {
+							that.pos[1] -= 1;
 						}
 					} else {
 						console.log("Unknown direction - " + that.direction);
@@ -294,10 +279,30 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 		return that;
 	}
 
+	function fuel(spec) {
+		spec.type = _g.types.ITEM;
+		spec.kind =  _g.kinds.item.fuel;
+
+		var that = object(spec);
+
+		that.onCollide = function (otherObject) {
+			otherObject.fuel += 1;
+			that.map.delObj(that.id);
+		}
+
+		that.draw = function (ctx) {
+			var x = that.pos[1] * TILE_SIZE + TILE_SIZE/4,
+				y = that.pos[0] * TILE_SIZE + TILE_SIZE/6;
+			ctx.fillStyle = "#eee";
+			ctx.fillRect (x, y, TILE_SIZE/2, TILE_SIZE/3);
+		}
+		return that;
+	}
 
 
 	return {
 		object: object,
 		player: player,
+		fuel: fuel,
 	}
 })

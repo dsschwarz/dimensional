@@ -18,6 +18,16 @@ define(["globals"], function(_g) {
 				sprite: "jfkds",
 				pos: {col: 20, row: 10}
 			}
+		],
+		map2: [
+			{
+				type: _g.types.ITEM, 
+				kind: _g.kinds.item.fuel,
+				name: "Bob",
+				color: "#ff0",
+				sprite: "jfkds",
+				pos: {col: 10, row: 10}
+			}
 		]
 	};
 		

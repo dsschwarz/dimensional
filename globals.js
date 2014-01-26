@@ -39,6 +39,9 @@ define(function() {
 			alice: 0,
 			bob: 1, 
 			charlie: 2
+		},
+		item: {
+			fuel: 0
 		}
 	};
 
