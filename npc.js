@@ -21,7 +21,9 @@ define(["globals", "objects", "ui"], function(_g, _o, _u) {
 			ctx.fillRect(x, y, width, height);
 		}
 
-		that.onCollide = function() {
+		that.onCollide = function(obj) {
+			console.log("OW!");
+			return true;
 		}
 
 		that.onTalk = function() {

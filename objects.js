@@ -27,17 +27,50 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 					console.log("moving");
 					var dir = that.direction;
 					if (dir === "up") {
-						if (that.pos[0] > 0)
-							that.pos[0] -= 1;
+						if (that.pos[0] > 0) {
+							if (that.map.getObjsAtPos(that.pos[0] - 1, that.pos[1]).length > 0){
+								var objs = that.map.getObjsAtPos(that.pos[0] - 1, that.pos[1]);
+								var hardCollide = false;
+								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
+							} 
+							if (!hardCollide) {
+								that.pos[0] -= 1;
+							}
+						}
 					} else if (dir === "right") {
-						if (that.pos[1] < that.map.cols - 1)
-							that.pos[1] += 1;
+						if (that.pos[1] < that.map.cols - 1) {
+							if (that.map.getObjsAtPos(that.pos[0] + 1, that.pos[1]).length > 0) {
+								var objs = that.map.getObjsAtPos(that.pos[0] + 1, that.pos[1]);
+								var hardCollide = false;
+								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
+							}
+							if (!hardCollide) {
+								that.pos[1] += 1;
+							}
+						}
 					} else if (dir === "down") {
-						if (that.pos[0] < that.map.rows - 1)
-							that.pos[0] += 1;
+						if (that.pos[0] < that.map.rows - 1) {
+							if (that.map.getObjsAtPos(that.pos[0], that.pos[1] + 1).length > 0) {
+								var objs = that.map.getObjsAtPos(that.pos[0], that.pos[1] + 1);
+								var hardCollide = false;
+								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
+							}
+							if (!hardCollide) {
+								that.pos[0] += 1;
+							}
+						}
 					} else if (dir === "left") {
-						if (that.pos[1] > 0)
-							that.pos[1] -= 1;
+						if (that.pos[1] > 0) {
+							if (that.map.getObjsAtPos(that.pos[0], that.pos[1] - 1).length > 0){
+								var objs = that.map.getObjsAtPos(that.pos[0], that.pos[1] - 1);
+								var hardCollide = false;
+								for(var idx in objs) {if (objs[idx].onCollide(that)) {hardCollide = true}}
+							}
+							if (!hardCollide) {
+								that.pos[1] -= 1;
+							}
+
+						}
 					} else {
 						console.log("Unknown direction - " + that.direction);
 					}
@@ -76,6 +109,10 @@ define(["globals", "objects", "ui"], function (_g, _o, _u) {
 			that.map.delObj(that.id);
 			that.map = targetMap;
 			targetMap.addObj(that);
+		}
+
+		that.onCollide = function() {
+			return false;
 		}
 
 		return that;
